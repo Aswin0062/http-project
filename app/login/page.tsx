@@ -1,21 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { Dog } from "lucide-react";
 import { useAuth } from "@/components/auth-provider";
 import { useSearchParams } from "next/navigation";
 
-const AuthPage = () => {
+const AuthPageContent = () => {
   const { logIn, signUp } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
-  const [message, setMessage] = useState<string>(searchParams.get("error") as string ?? "");
+  const [message, setMessage] = useState<string>(searchParams.get("error") ?? "");
 
-  
   const isValidPassword = (password: string) => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -159,7 +158,7 @@ const AuthPage = () => {
               <button
                 type="submit"
                 className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
-                disabled={loading || (!isLogin && !isValidPassword(password))} 
+                disabled={loading || (!isLogin && !isValidPassword(password))}
               >
                 {loading
                   ? isLogin
@@ -174,6 +173,14 @@ const AuthPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const AuthPage = () => {
+  return (
+    <Suspense fallback={<div className="text-center mt-4">Loading...</div>}>
+      <AuthPageContent />
+    </Suspense>
   );
 };
 
