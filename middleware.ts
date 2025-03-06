@@ -9,7 +9,7 @@ export default withAuth(
     const { nextUrl } = req;
     const isAuthenticated = !!req.nextauth.token;
     if (isAuthenticated && nextUrl.pathname === '/')
-      return Response.redirect(new URL('/search', nextUrl));
+      return Response.redirect(new URL('/search', req.url));
     return NextResponse.next();
   },
   {
