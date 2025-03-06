@@ -25,12 +25,12 @@ export default function Navbar() {
                 </button>
               </Link>
               <Link href="/filters">
-                <button className="border-[1px] flex flex-row items-center p-2 rounded-lg hover:bg-black hover:text-white transition">
+                <button className="border-[1px] flex flex-row gap-2 items-center p-2 rounded-lg hover:bg-black hover:text-white transition">
                   <List className="h-4 w-4" />
                   <span className="hidden sm:inline-block">My Filters</span>
                 </button>
               </Link>
-              <button className="border-[1px] flex flex-row items-center p-2 rounded-lg hover:bg-black hover:text-white transition" onClick={() => logOut()}>
+              <button className="border-[1px] flex flex-row gap-2 items-center p-2 rounded-lg hover:bg-black hover:text-white transition" onClick={() => logOut()}>
                 <LogOut className="h-4 w-4" />
                 <span className="hidden sm:inline-block">Sign Out</span>
               </button>

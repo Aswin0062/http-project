@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Edit, Trash, Calendar, ListIcon, XCircle } from "lucide-react";
+import { Edit, Trash, Calendar, ListIcon, XCircle, ChevronDown } from "lucide-react";
 import { TSavedFilter } from "@/dao";
 import { SavedFilterService } from "@/services/SavedFilterService";
 import { useToast } from "@/components/ui/use-toast";
@@ -24,16 +24,19 @@ const FiltersPage = () => {
   const [openAccordion, setOpenAccordion] = useState<string | undefined>(
     undefined
   );
+  const [loading,setLoading]=useState<boolean>(true)
 
   useEffect(() => {
     fetchLists();
   }, []);
 
   const fetchLists = async () => {
+    setLoading(true)
     const response = await SavedFilterService.getAll();
     if (response) {
       setLists(response);
     }
+    setLoading(false)
   };
 
   const handleDeleteList = async (id: string) => {
@@ -133,7 +136,11 @@ const FiltersPage = () => {
         </div>
       </div>
 
-      {lists.length > 0 ? (
+      {loading ? (
+        <div className="flex justify-center items-center mt-8">
+          <p>Loading...</p>
+        </div>
+      ) : lists.length > 0 ? (
         <div
           className={`grid ${
             viewMode === "grid" ? "gap-6 sm:grid-cols-2 lg:grid-cols-3" : ""
@@ -149,7 +156,11 @@ const FiltersPage = () => {
                 )
               }
             >
+              <div className="flex flex-row w-full items-center justify-between">
               <h2 className="font-semibold">{list.name}</h2>
+              
+            {viewMode==="detail"? <ChevronDown />:null}  
+              </div>
               <p className="text-sm text-muted-foreground flex items-center">
                 <Calendar className="mr-1 h-3 w-3" />{" "}
                 {formatDate(list.createdAt)}
@@ -179,9 +190,7 @@ const FiltersPage = () => {
                   onValueChange={setOpenAccordion}
                 >
                   <AccordionItem value={list.id}>
-                    <AccordionTrigger>
-                      {!openAccordion ? <p>Click here to view</p> : ""}
-                    </AccordionTrigger>
+                   
                     <AccordionContent>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                         {(list.httpCodes ?? []).map((code) => (

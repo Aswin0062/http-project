@@ -181,7 +181,7 @@ const HttpCodeSearch = () => {
                 <img
                   src={code.image || "/placeholder.svg"}
                   alt={`HTTP ${code.code} - ${code.name}`}
-                  className="aspect-video w-full object-cover"
+                  className=" w-full object-cover "
                   onError={(e) => {
                     e.currentTarget.src =
                       "/placeholder.svg?height=200&width=400";

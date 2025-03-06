@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Dog } from "lucide-react";
 import { useAuth } from "@/components/auth-provider";
+import { useSearchParams } from "next/navigation";
 
 const AuthPage = () => {
   const { logIn, signUp } = useAuth();
@@ -11,7 +12,8 @@ const AuthPage = () => {
   const [password, setPassword] = useState<string>("");
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const searchParams = useSearchParams();
+  const [message, setMessage] = useState<string>(searchParams.get("error") as string ?? "");
 
   
   const isValidPassword = (password: string) => {
